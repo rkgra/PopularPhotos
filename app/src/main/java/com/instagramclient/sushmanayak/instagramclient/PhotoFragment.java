@@ -37,16 +37,19 @@ public class PhotoFragment extends Fragment {
     int mFetchType = Utility.POPULAR_PHOTOS;
     String mFetchParameter1;
     String mFetchParameter2;
+    final static String FETCH_TYPE = "FetchType";
+    final static String PARAM1 = "FetchParameter1";
+    final static String PARAM2 = "FetchParameter2";
 
-    public PhotoFragment(Context context) {
-        mContext = context;
-    }
+    public PhotoFragment(){}
 
     public static PhotoFragment newInstance(Context context, int fetchType, String parameter1, String parameter2) {
-        PhotoFragment fragment = new PhotoFragment(context);
-        fragment.mFetchType = fetchType;
-        fragment.mFetchParameter1 = parameter1;
-        fragment.mFetchParameter2 = parameter2;
+        PhotoFragment fragment = new PhotoFragment();
+        Bundle args = new Bundle();
+        args.putInt(FETCH_TYPE, fetchType);
+        args.putString(PARAM1, parameter1);
+        args.putString(PARAM2, parameter2);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -54,10 +57,20 @@ public class PhotoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        mContext = getActivity();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
         lvPhotos = (ListView) view.findViewById(R.id.lvPhotos);
         photos = new ArrayList<>();
+
+        Bundle args = getArguments();
+        if(args != null)
+        {
+            mFetchType = args.getInt(FETCH_TYPE);
+            mFetchParameter1 = args.getString(PARAM1);
+            mFetchParameter2 = args.getString(PARAM2);
+        }
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

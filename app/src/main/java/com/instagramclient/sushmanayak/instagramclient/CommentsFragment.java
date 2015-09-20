@@ -28,29 +28,37 @@ import java.util.ArrayList;
  */
 public class CommentsFragment extends Fragment {
 
-    String photoId;
+    String mPhotoId;
     Context mContext;
     ListView lvComments;
     CommentsAdapter commentsAdapter;
     ArrayList<Comment> comments;
+    final static String PHOTOID = "InstagramPhotoID";
 
     public CommentsFragment() {
     }
 
     public static CommentsFragment newInstance(Context context, String id) {
         CommentsFragment fragment = new CommentsFragment();
-        fragment.mContext = context;
-        fragment.photoId = id;
+        Bundle args = new Bundle();
+        args.putString(PHOTOID, id);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mContext = getActivity();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comments, container, false);
         lvComments = (ListView) view.findViewById(R.id.lvComments);
         comments = new ArrayList<>();
+
+        Bundle args = getArguments();
+        if(args != null)
+            mPhotoId = args.getString(PHOTOID);
+
         commentsAdapter = new CommentsAdapter(mContext, comments);
         lvComments.setAdapter(commentsAdapter);
         fetchComments();
@@ -62,7 +70,7 @@ public class CommentsFragment extends Fragment {
     }
 
     private void fetchComments() {
-        String url = Utility.COMMENTS_BASE_URL + photoId + "/comments?client_id=" + getString(R.string.api_key);
+        String url = Utility.COMMENTS_BASE_URL + mPhotoId + "/comments?client_id=" + getString(R.string.api_key);
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(mContext, url, new JsonHttpResponseHandler() {
