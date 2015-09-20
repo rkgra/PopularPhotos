@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Popular Photos</string>
+
+    <string name="api_key">bd3f760ff06247d8bf38f64a74eeda11</string>
+    <string name="title_activity_comments">CommentsActivity</string>
+    <string name="title_activity_video_player">VideoPlayerActivity</string>
+
+    <string name="noNetwork">Cannot display photos. No network connection available</string>
+
+    <string name="addComment">Add a comment</string>
+    <string name="copytoClipboard">This photo\'s sharable link has been copied to the clipboard.</string>
+</resources>
